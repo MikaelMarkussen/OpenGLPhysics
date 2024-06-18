@@ -1,23 +1,21 @@
 #pragma once
-#include <GLFWa>
+#include <glad/glad.h>
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
 
-class Window
+
+class OpenGLWindow
 {
 public:
-	Window();
-	~Window();
-	void run()
-	{
-		
-	}
+	OpenGLWindow();
+	void run();
+	void ProcessInput(GLFWwindow* window);
 private:
-
+	//functions
+	void WindowLoop(GLFWwindow* window);
+	void FrameBufferSizeCallback(GLFWwindow* window, int width, int height);
+	bool CreateShaders();
+	
+	//objects
+	
 };
-
-Window::Window()
-{
-}
-
-Window::~Window()
-{
-}
