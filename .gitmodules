@@ -1,3 +1,6 @@
 [submodule "OpenGLPhysics/Libs/glfw"]
 	path = OpenGLPhysics/Libs/glfw
 	url = https://github.com/glfw/glfw.git
+[submodule "OpenGLPhysicsLibs"]
+	path = OpenGLPhysicsLibs
+	url = https://github.com/g-truc/glm.git

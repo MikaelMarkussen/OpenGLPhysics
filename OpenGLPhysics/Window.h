@@ -14,7 +14,6 @@ private:
 	//functions
 	void WindowLoop(GLFWwindow* window);
 	void FrameBufferSizeCallback(GLFWwindow* window, int width, int height);
-	bool CreateShaders();
 	
 	//objects
 	

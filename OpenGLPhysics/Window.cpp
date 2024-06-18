@@ -1,6 +1,6 @@
 #include "Window.h"
 #include <iostream>
-
+#include "Rendering/Shader.h"
 
 float vertices[] = {
 	 0.5f,  0.5f, 0.0f,  // top right
@@ -12,20 +12,6 @@ unsigned int indices[] = {  // note that we start from 0!
 	0, 1, 3,   // first triangle
 	1, 2, 3    // second triangle
 };
-const char* vertexShaderSource = "#version 330 core\n"
-"layout (location = 0) in vec3 aPos;\n"
-"void main()\n"
-"{\n"
-"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-"}\0";
-
-const char* fragmentShaderSource = "#version 330 core\n"
-"out vec4 FragColor;\n"
-
-"void main()\n"
-"{\n"
-"	FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-" } \0";
 
 
 OpenGLWindow::OpenGLWindow()
@@ -62,21 +48,7 @@ void OpenGLWindow::ProcessInput(GLFWwindow* window)
 
 void OpenGLWindow::WindowLoop(GLFWwindow* window)
 {
-	unsigned int vertexShader;
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	glCompileShader(vertexShader);
-
-	unsigned int fragmentShader;
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(fragmentShader);
-
-	unsigned int shaderProgram;
-	shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
+	std::unique_ptr<Shader> shader = std::make_unique<Shader>();//std::make_unique<Shader>("Shaders/shader.vert","Shaders/shader.frag");
 
 	unsigned int VAO, VBO,EBO;
 	glGenVertexArrays(1, &VAO);
@@ -98,48 +70,23 @@ void OpenGLWindow::WindowLoop(GLFWwindow* window)
 	while (!glfwWindowShouldClose(window))
 	{
 		ProcessInput(window);
+		shader->UseShader();
+		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glUseProgram(shaderProgram);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,EBO);
 		glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
-
+	
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
 	glfwTerminate();
 }
 
 void OpenGLWindow::FrameBufferSizeCallback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
-}
-bool OpenGLWindow::CreateShaders()
-{
-	unsigned int vertexShader;
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	glCompileShader(vertexShader);
-
-	unsigned int fragmentShader;
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(fragmentShader);
-
-	unsigned int shaderProgram;
-	shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-
-	glUseProgram(shaderProgram);
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-	return true;
-		
 }
 
 

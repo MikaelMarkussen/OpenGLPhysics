@@ -8,7 +8,7 @@
 
 
 #add_executable(OpenGLPhysics ${HEADER_FILES} ${SOURCE_FILES})
-add_executable(OpenGLPhysics "main.cpp" "Window.h" "externals/include/glad/glad.h" "externals/include/KHR/khrplatform.h" "Window.cpp" "glad.c" "Camera.h" "Rendering/Shader.h")
+add_executable(OpenGLPhysics "main.cpp" "Window.h" "externals/include/glad/glad.h" "externals/include/KHR/khrplatform.h" "Window.cpp" "glad.c" "Camera.h" "Rendering/Shader.h" "Rendering/Shader.cpp" "VisualObject.h")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET OpenGLPhysics PROPERTY CXX_STANDARD 20)
